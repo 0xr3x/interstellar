@@ -13,15 +13,29 @@ pub struct SpaceMan;
 #[contractimpl]
 impl SpaceMan {
     pub fn __constructor(e: &Env, iss: Address) {
-        Base::set_metadata(e, String::from_str(e, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVcCgCm4-rhwsEoWf6tjvfRjGXhvHuA2BpwQ&s"), String::from_str(e, "SpaceMan"), String::from_str(e, "SPACE"));
+        Base::set_metadata(e, String::from_str(e, "https://ipfs.io/ipfs/bafybeidtkgestuvpft52q3pr5xpepcwhbaeukeu7iy33qdkqqd67y35uhq"), String::from_str(e, "SpaceMan"), String::from_str(e, "SPACE"));
         e.storage().instance().set(&ISS, &iss);
     }
 
     pub fn mint(e: &Env, to: Address, token_id: u32) {
         let iss: Address = e.storage().instance().get(&ISS).expect("iss should be set");
         iss.require_auth();
+    
+        let uri = match token_id % 5 {
+            0 => "https://ipfs.io/ipfs/bafybeic7krn45dxjy4pusdwznkm6xo4madluwbz7ep7gun6wzjhdhperle",
+            1 => "https://ipfs.io/ipfs/bafybeihh5do3sqgukeo3cjge46phryqqrh4dd5t43bs2uuqmdahikccn5y",
+            2 => "https://ipfs.io/ipfs/bafybeibypknhnao637iwt63c2w7qv6gaz4b57igt3tc3p3nmzu6bedjcya",
+            3 => "https://ipfs.io/ipfs/bafybeiaxbvl7t7mvv77pkq7jh5xr2yg3yhq3smeaubmja3xglgdrp76aoy",
+            _ => "https://ipfs.io/ipfs/bafybeidtkgestuvpft52q3pr5xpepcwhbaeukeu7iy33qdkqqd67y35uhq",
+        };
+    
+        // mint the token
         Base::mint(e, &to, token_id);
+    
+        // set the metadata given by the token_id
+        Base::set_token_metadata(e, token_id, String::from_str(e, uri), String::from_str(e, "SpaceMan"), String::from_str(e, "SPACE"));
     }
+    
 }
 
 #[contractimpl]
