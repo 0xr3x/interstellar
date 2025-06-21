@@ -1,31 +1,31 @@
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Stellar Soroban Contracts ^0.2.0
-
+#![no_std]
 
 use soroban_sdk::{Address, contract, contractimpl, Env, String, Symbol, symbol_short};
-use stellar_non_fungible::{Base, Base::sequential_mint, NonFungibleToken};
+use stellar_non_fungible::{Base, NonFungibleToken};
 
 const OWNER: Symbol = symbol_short!("OWNER");
 
 #[contract]
-pub struct MyToken;
+pub struct SpaceMan;
 
 #[contractimpl]
-impl MyToken {
+impl SpaceMan {
     pub fn __constructor(e: &Env, owner: Address) {
-        Base::set_metadata(e, String::from_str(e, "www.mytoken.com"), String::from_str(e, "MyToken"), String::from_str(e, "MTK"));
+        Base::set_metadata(e, String::from_str(e, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVcCgCm4-rhwsEoWf6tjvfRjGXhvHuA2BpwQ&s"), String::from_str(e, "SpaceMan"), String::from_str(e, "SPACE"));
         e.storage().instance().set(&OWNER, &owner);
     }
 
-    pub fn sequential_mint(e: &Env, to: Address) {
+    pub fn mint(e: &Env, to: Address, token_id: u32) {
         let owner: Address = e.storage().instance().get(&OWNER).expect("owner should be set");
         owner.require_auth();
-        Base::sequential_mint(e, &to);
+        Base::mint(e, &to, token_id);
     }
 }
 
 #[contractimpl]
-impl NonFungibleToken for MyToken {
+impl NonFungibleToken for SpaceMan {
     type ContractType = Base;
 
     fn owner_of(e: &Env, token_id: u32) -> Address {

@@ -33,7 +33,7 @@ client = true
 # Only available in `development` and `test` environments
 # TODO add appropriate values for for the constructors arguments
 constructor_args = """
---owner "ADD_OWNER_ADDRESS_HERE"
+--owner "GDNS3FTRI64VM7YX2INGTZ4VRAEZ62EUYLJ43OXQLOFTSUXSIJ7C2HJL"
 """
 
 [staging.network]
