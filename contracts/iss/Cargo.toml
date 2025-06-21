@@ -1,5 +1,5 @@
 [package]
-name = "space-station"
+name = "iss"
 edition.workspace = true
 license.workspace = true
 publish = false

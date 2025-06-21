@@ -5,21 +5,21 @@
 use soroban_sdk::{Address, contract, contractimpl, Env, String, Symbol, symbol_short};
 use stellar_non_fungible::{Base, NonFungibleToken};
 
-const OWNER: Symbol = symbol_short!("OWNER");
+const ISS: Symbol = symbol_short!("ISS");
 
 #[contract]
 pub struct SpaceMan;
 
 #[contractimpl]
 impl SpaceMan {
-    pub fn __constructor(e: &Env, owner: Address) {
+    pub fn __constructor(e: &Env, iss: Address) {
         Base::set_metadata(e, String::from_str(e, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVcCgCm4-rhwsEoWf6tjvfRjGXhvHuA2BpwQ&s"), String::from_str(e, "SpaceMan"), String::from_str(e, "SPACE"));
-        e.storage().instance().set(&OWNER, &owner);
+        e.storage().instance().set(&ISS, &iss);
     }
 
     pub fn mint(e: &Env, to: Address, token_id: u32) {
-        let owner: Address = e.storage().instance().get(&OWNER).expect("owner should be set");
-        owner.require_auth();
+        let iss: Address = e.storage().instance().get(&ISS).expect("iss should be set");
+        iss.require_auth();
         Base::mint(e, &to, token_id);
     }
 }
@@ -40,8 +40,8 @@ impl NonFungibleToken for SpaceMan {
         Self::ContractType::transfer_from(e, &spender, &from, &to, token_id);
     }
 
-    fn balance(e: &Env, owner: Address) -> u32 {
-        Self::ContractType::balance(e, &owner)
+    fn balance(e: &Env, iss: Address) -> u32 {
+        Self::ContractType::balance(e, &iss)
     }
 
     fn approve(
@@ -54,16 +54,16 @@ impl NonFungibleToken for SpaceMan {
         Self::ContractType::approve(e, &approver, &approved, token_id, live_until_ledger);
     }
 
-    fn approve_for_all(e: &Env, owner: Address, operator: Address, live_until_ledger: u32) {
-        Self::ContractType::approve_for_all(e, &owner, &operator, live_until_ledger);
+    fn approve_for_all(e: &Env, iss: Address, operator: Address, live_until_ledger: u32) {
+        Self::ContractType::approve_for_all(e, &iss, &operator, live_until_ledger);
     }
 
     fn get_approved(e: &Env, token_id: u32) -> Option<Address> {
         Self::ContractType::get_approved(e, token_id)
     }
 
-    fn is_approved_for_all(e: &Env, owner: Address, operator: Address) -> bool {
-        Self::ContractType::is_approved_for_all(e, &owner, &operator)
+    fn is_approved_for_all(e: &Env, iss: Address, operator: Address) -> bool {
+        Self::ContractType::is_approved_for_all(e, &iss, &operator)
     }
 
     fn name(e: &Env) -> String {

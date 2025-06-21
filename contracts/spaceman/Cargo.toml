@@ -1,5 +1,5 @@
 [package]
-name = "non-fungible-contract"
+name = "spaceman"
 edition.workspace = true
 license.workspace = true
 publish = false
