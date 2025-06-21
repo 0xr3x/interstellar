@@ -1,17 +1,30 @@
 import { Code, Layout } from "@stellar/design-system";
 import "./App.module.css";
 import ConnectAccount from "./components/ConnectAccount.tsx";
+import Starscape from "./components/Starscape";
+import NFTBidModule from "./components/NFTBidModule";
 
 function App() {
   return (
     <main>
+      <Starscape />
       <Layout.Header
-        projectId="My App"
-        projectTitle="My App"
+        projectId="Interstellar"
+        projectTitle="Interstellar"
         contentRight={<ConnectAccount />}
       />
       <Layout.Content>
         <Layout.Inset>
+          <NFTBidModule
+            nftId={1555}
+            currentBid={0.69}
+            lastBidder={"0xF...89DF"}
+            auctionEndTime={new Date(Date.now() + 18 * 60 * 60 * 1000)} // 18 hours
+            onPlaceBid={(amount) => {
+              console.log("Bid placed:", amount);
+              // 🔗 Replace with real Soroban call
+            }}
+          />
           <h1>Welcome to your app!</h1>
           <p>
             This is a basic template to get your dapp started with the Stellar
@@ -69,7 +82,7 @@ function App() {
       </Layout.Content>
       <Layout.Footer>
         <span>
-          © {new Date().getFullYear()} My App. Licensed under the{" "}
+          © {new Date().getFullYear()} Interstellar. Licensed under the{" "}
           <a
             href="http://www.apache.org/licenses/LICENSE-2.0"
             target="_blank"
