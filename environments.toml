@@ -39,7 +39,7 @@ client = true
 [development.contracts.spaceman]
 client = true
 constructor_args = """
---iss {{ contracts.iss }}
+--iss CASD6L32P7H5P6AHWRBB6NR6DAXVKJPUWZ3IH2YVDHGDZ4JZJPT7K2S5
 """
 
 [staging.network]
