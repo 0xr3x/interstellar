@@ -8,23 +8,74 @@ import SpacemenGallery from "./pages/SpacemenGallery";
 
 function HomePage() {
   return (
-    <Layout.Inset>
-      <NFTBidModule
-        nftId={1555}
-        currentBid={0.69}
-        lastBidder={"0xF...89DF"}
-        auctionEndTime={new Date(Date.now() + 18 * 60 * 60 * 1000)}
-        onPlaceBid={(amount) => console.log("Bid placed:", amount)}
-      />
-      <h1>Welcome to your app!</h1>
-      {/* the rest of your homepage content */}
+    <Layout.Inset style={{ height: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: "1rem",
+          height: "100%",
+          maxWidth: "100%",
+          justifyContent: "center",
+          alignItems: "stretch",
+        }}
+      >
+        <img
+          src="https://crimson-peaceful-impala-136.mypinata.cloud/ipfs/bafybeiaxbvl7t7mvv77pkq7jh5xr2yg3yhq3smeaubmja3xglgdrp76aoy"
+          alt="NFT preview"
+          style={{
+            width: "48%",
+            height: "auto",
+            maxHeight: "100%",
+            objectFit: "contain",
+            borderRadius: "8px",
+            boxShadow: "0 0 8px rgba(0,0,0,0.15)",
+          }}
+        />
+        <div
+          style={{
+            width: "48%",
+            maxHeight: "350px",
+            flexShrink: 0,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "1.5rem",
+            borderRadius: "12px",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+            color: "#ffffff",
+            fontWeight: "600",
+          }}
+        >
+          <NFTBidModule
+            nftId={1555}
+            currentBid={0.69}
+            lastBidder={"0xF...89DF"}
+            auctionEndTime={new Date(Date.now() + 18 * 60 * 60 * 1000)}
+            onPlaceBid={(amount) => {
+              console.log("Bid placed:", amount);
+            }}
+            style={{
+              flexGrow: 1,
+              color: "white",
+              backgroundColor: "transparent",
+            }}
+          />
+          <p style={{ marginTop: "1rem", fontSize: "0.9rem" }}>
+            <span style={{ color: "#9b59b6" }}>Stellar Blockchain</span>{" "}
+            <span style={{ color: "#f1c40f" }}>NFT Auction</span>{" "}
+            <span style={{ color: "#ffffff" }}>Make your bid now!</span>
+          </p>
+        </div>
+      </div>
     </Layout.Inset>
   );
 }
 
 function App() {
   return (
-    <main>
+    <main style={{ height: "100vh" }}>
       <Starscape />
       <Layout.Header
         projectId="Interstellar"
@@ -40,7 +91,7 @@ function App() {
           </div>
         }
       />
-      <Layout.Content>
+      <Layout.Content style={{ height: "calc(100vh - 120px)" }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/spacemen" element={<SpacemenGallery />} />
@@ -48,15 +99,11 @@ function App() {
       </Layout.Content>
       <Layout.Footer>
         <span>
-          © {new Date().getFullYear()} Interstellar. Licensed under the{" "}
-          <a
-            href="http://www.apache.org/licenses/LICENSE-2.0"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Apache License, Version 2.0
-          </a>
-          .
+          <span style={{ color: "#f1c40f" }}>
+            © {new Date().getFullYear()}
+          </span>{" "}
+          <span style={{ color: "#9b59b6" }}>Interstellar.</span>
+          <span style={{ color: "#ffffff" }}> All rights reserved.</span>
         </span>
       </Layout.Footer>
     </main>

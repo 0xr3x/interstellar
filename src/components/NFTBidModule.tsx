@@ -53,7 +53,7 @@ const NFTBidModule: React.FC<NFTBidModuleProps> = ({
         maxWidth: 420,
         padding: 24,
         borderRadius: 12,
-        background: "#f4f4f8",
+        background: "transparent",
         fontFamily: "Arial, sans-serif",
         marginBottom: 32,
       }}
