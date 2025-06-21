@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
-#![no_std]
-
 use soroban_sdk::{contract, contractimpl, Address, Env, Symbol, symbol_short, Vec, Map, String, BytesN, Val, IntoVal};
 
 const START: Symbol = symbol_short!("START");
 const TOKEN_ID: Symbol = symbol_short!("TID");
 const HIGHEST_BID: Symbol = symbol_short!("HIGH");
 const HIGHEST_BIDDER: Symbol = symbol_short!("WINNER");
-const NFT_CONTRACT: Symbol = symbol_short!("NFT");
+const SPACEMAN: Symbol = symbol_short!("SPACEMAN");
+const OWNER: Symbol = symbol_short!("OWNER");
 
 #[contract]
 pub struct ISS;
@@ -53,7 +52,6 @@ impl ISS {
         e.storage().instance().set(&OWNER, &new_owner);
     }
     
-
     // this should be called only on first initialization
     pub fn set_nft_contract(e: &Env, nft_contract: Address) {
         let owner: Address = e.storage().instance().get(&OWNER).expect("OWNER not set");
@@ -81,10 +79,6 @@ impl ISS {
             .expect("Auction not started");
 
         let now = e.ledger().timestamp();
-        assert!(now - start_time < 300, "Auction ended");
-
-        let payment: i128 = e.auths().get(0).unwrap().1; // XLM sent
-        assert!(payment > 0, "Zero payment");
 
         let current_high: i128 = e
             .storage()
@@ -92,7 +86,12 @@ impl ISS {
             .get((&HIGHEST_BID, token_id))
             .unwrap_or(0);
 
-        assert!(payment > current_high, "Bid too low");
+        assert!(now - start_time < 300, "Auction ended");
+        assert!(amount > 0, "Zero payment");    
+        assert!(amount > current_high, "Bid too low");
+
+        // this is like a safeTransfer by default
+        e.accounts().transfer(&bidder, &e.current_contract_address(), &amount);
 
         // refund previous bidder
         if let Some(prev_bidder) =
@@ -106,7 +105,7 @@ impl ISS {
         // save new highest bid
         e.storage()
             .persistent()
-            .set((&HIGHEST_BID, token_id), &payment);
+            .set(&(&HIGHEST_BID, token_id), &payment);
         e.storage()
             .persistent()
             .set((&HIGHEST_BIDDER, token_id), &bidder);
@@ -120,7 +119,7 @@ impl ISS {
         let start_time: u64 = e
             .storage()
             .persistent()
-            .get((&START, token_id))
+            .get((&(START, token_id)))
             .expect("Auction not started");
         assert!(
             e.ledger().timestamp() >= start_time + 300,
@@ -135,7 +134,7 @@ impl ISS {
             .expect("No winner");
     
         // mint NFT to winner
-        let nft_contract: Address = e.storage().instance().get(&NFT_CONTRACT).unwrap();
+        let nft_contract: Address = e.storage().instance().get(&SPACEMAN).unwrap();
         e.invoke_contract::<()>(
             &nft_contract,
             &symbol_short!("mint"),
@@ -176,13 +175,13 @@ impl ISS {
         assert!(withdrawable > 0, "Nothing to withdraw");
     
         // pay in native XLM
-        e.pay(&contract_address, &to, &withdrawable);
+        e.accounts().transfer(&contract_address, &to, &withdrawable);
     }
     // pub fn mint_nft(e: &Env, to: Address, token_id: u32) {
     //     let nft_contract = Self::get_nft_contract(e);
 
     //     let mut args = Vec::new(e);
-    //     args.push_back(to.into_val(e));
+    //     args.push_back(to.into_vaql(e));
     //     args.push_back(token_id.into_val(e));
 
     //     e.invoke_contract::<()>(
