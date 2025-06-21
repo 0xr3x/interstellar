@@ -22,6 +22,7 @@
     "@stellar/stellar-sdk": "^13.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-router-dom": "^7.6.2",
     "zod": "^3.25.67"
   },
   "devDependencies": {
