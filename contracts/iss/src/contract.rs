@@ -1,18 +1,28 @@
-use soroban_sdk::{contract, contractimpl, Env, Address, Symbol, symbol_short, Vec, Val, IntoVal};
+use soroban_sdk::{contract, contractimpl, Env, Address, Symbol, symbol_short, Vec, Val, IntoVal, String};
+
+const OWNER: Symbol = symbol_short!("OWNER");
+const SPACEMAN: Symbol = symbol_short!("SpaceMan");
 
 #[contract]
 pub struct ISS;
 
 #[contractimpl]
 impl ISS {
+    pub fn __constructor(e: &Env, owner: Address) {
+        e.storage().instance().set(&OWNER, &owner);
+    }
+
     pub fn set_nft_contract(e: &Env, nft_contract: Address) {
-        e.storage().instance().set(&symbol_short!("SpaceMan"), &nft_contract);
+        let owner: Address = e.storage().instance().get(&OWNER).expect("OWNER not set");
+        owner.require_auth();
+
+        e.storage().instance().set(&SPACEMAN, &nft_contract);
     }
 
     pub fn get_nft_contract(e: &Env) -> Address {
         e.storage()
             .instance()
-            .get(&symbol_short!("SpaceMan"))
+            .get(&SPACEMAN)
             .expect("SpaceMan contract not set")
     }
 

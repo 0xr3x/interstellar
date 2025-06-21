@@ -92,6 +92,7 @@ impl NonFungibleToken for SpaceMan {
 
     fn token_uri(e: &Env, token_id: u32) -> String {
         // Self::ContractType::token_uri(e, token_id)
+        // custom token_uri implemenation
         SpaceMan::spaceman_token_uri(e, token_id)
     }
 }
