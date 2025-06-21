@@ -21,19 +21,21 @@ impl SpaceMan {
         let iss: Address = e.storage().instance().get(&ISS).expect("iss should be set");
         iss.require_auth();
     
-        let uri = match token_id % 5 {
-            0 => "https://ipfs.io/ipfs/bafybeic7krn45dxjy4pusdwznkm6xo4madluwbz7ep7gun6wzjhdhperle",
-            1 => "https://ipfs.io/ipfs/bafybeihh5do3sqgukeo3cjge46phryqqrh4dd5t43bs2uuqmdahikccn5y",
-            2 => "https://ipfs.io/ipfs/bafybeibypknhnao637iwt63c2w7qv6gaz4b57igt3tc3p3nmzu6bedjcya",
-            3 => "https://ipfs.io/ipfs/bafybeiaxbvl7t7mvv77pkq7jh5xr2yg3yhq3smeaubmja3xglgdrp76aoy",
-            _ => "https://ipfs.io/ipfs/bafybeidtkgestuvpft52q3pr5xpepcwhbaeukeu7iy33qdkqqd67y35uhq",
-        };
-    
         // mint the token
         Base::mint(e, &to, token_id);
-    
-        // set the metadata given by the token_id
-        Base::set_token_metadata(e, token_id, String::from_str(e, uri), String::from_str(e, "SpaceMan"), String::from_str(e, "SPACE"));
+    }
+
+    pub fn spaceman_token_uri(e: &Env, token_id: u32) -> String {
+        let _ = Base::owner_of(e, token_id);
+
+        let uri = match token_id % 5 {
+            0 => String::from_str(e,"https://ipfs.io/ipfs/bafybeic7krn45dxjy4pusdwznkm6xo4madluwbz7ep7gun6wzjhdhperle"),
+            1 => String::from_str(e,"https://ipfs.io/ipfs/bafybeihh5do3sqgukeo3cjge46phryqqrh4dd5t43bs2uuqmdahikccn5y"),
+            2 => String::from_str(e,"https://ipfs.io/ipfs/bafybeibypknhnao637iwt63c2w7qv6gaz4b57igt3tc3p3nmzu6bedjcya"),
+            3 => String::from_str(e,"https://ipfs.io/ipfs/bafybeiaxbvl7t7mvv77pkq7jh5xr2yg3yhq3smeaubmja3xglgdrp76aoy"),
+            _ => String::from_str(e,"https://ipfs.io/ipfs/bafybeidtkgestuvpft52q3pr5xpepcwhbaeukeu7iy33qdkqqd67y35uhq"),
+        };
+        Base::compose_uri_for_token(e, uri, token_id)
     }
     
 }
@@ -89,6 +91,7 @@ impl NonFungibleToken for SpaceMan {
     }
 
     fn token_uri(e: &Env, token_id: u32) -> String {
-        Self::ContractType::token_uri(e, token_id)
+        // Self::ContractType::token_uri(e, token_id)
+        SpaceMan::spaceman_token_uri(e, token_id)
     }
 }
