@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
 // Compatible with OpenZeppelin Stellar Soroban Contracts ^0.2.0
-#![no_std]
 
 use soroban_sdk::{Address, contract, contractimpl, Env, String, Symbol, symbol_short};
 use stellar_non_fungible::{Base, NonFungibleToken};

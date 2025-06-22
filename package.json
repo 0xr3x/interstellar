@@ -1,8 +1,11 @@
 {
-  "name": "scaffold-stellar-frontend",
+  "name": "interstellar",
   "type": "module",
   "version": "0.0.1",
   "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "concurrently \"stellar scaffold watch --build-clients\" \"vite\"",
     "start": "concurrently \"stellar scaffold watch --build-clients\" \"vite\"",
@@ -13,9 +16,6 @@
     "format": "prettier . --write",
     "prepare": "husky"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
     "@creit.tech/stellar-wallets-kit": "^1.7.5",
     "@stellar/design-system": "^3.1.1",

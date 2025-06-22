@@ -25,6 +25,7 @@ export const useWalletBalance = () => {
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
       const balances = await fetchBalance(address);
+      console.log("wallet balance!!!", balances[0]);
       const native = balances.find(({ asset_type }) => asset_type === "native");
       setState({
         isLoading: false,
