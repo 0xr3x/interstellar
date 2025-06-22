@@ -9,71 +9,73 @@ import Docs from "./pages/Docs";
 
 function HomePage() {
   return (
-    <Layout.Inset style={{ height: "100%" }}>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          gap: "1rem",
-          height: "100%",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "stretch",
-          padding: "0 2rem",
-        }}
-      >
-        <img
-          src="https://crimson-peaceful-impala-136.mypinata.cloud/ipfs/bafybeiaxbvl7t7mvv77pkq7jh5xr2yg3yhq3smeaubmja3xglgdrp76aoy"
-          alt="NFT preview"
-          style={{
-            width: "48%",
-            height: "auto",
-            maxHeight: "100%",
-            objectFit: "contain",
-            borderRadius: "8px",
-            boxShadow: "0 0 8px rgba(0,0,0,0.15)",
-          }}
-        />
+    <div style={{ height: "100%" }}>
+      <Layout.Inset>
         <div
           style={{
-            width: "48%",
-            maxHeight: "350px",
-            flexShrink: 0,
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
+            gap: "1rem",
+            height: "100%",
+            width: "100%",
             justifyContent: "center",
-            padding: "1.5rem",
-            borderRadius: "12px",
-            backgroundColor: "transparent",
-            color: "#ffffff",
-            fontWeight: 600,
+            alignItems: "stretch",
+            padding: "0 2rem",
           }}
         >
-          <div style={{ flexGrow: 1 }}>
-            <NFTBidModule
-              nftId={1555}
-              currentBid={0.69}
-              lastBidder={"0xF...89DF"}
-              auctionEndTime={new Date(Date.now() + 18 * 60 * 60 * 1000)}
-              onPlaceBid={(amount) => {
-                console.log("Bid placed:", amount);
-              }}
-            />
-          </div>
-          <p
+          <img
+            src="https://crimson-peaceful-impala-136.mypinata.cloud/ipfs/bafybeiaxbvl7t7mvv77pkq7jh5xr2yg3yhq3smeaubmja3xglgdrp76aoy"
+            alt="NFT preview"
             style={{
-              marginTop: "1rem",
-              fontSize: "0.9rem",
-              textAlign: "center",
+              width: "48%",
+              height: "auto",
+              maxHeight: "100%",
+              objectFit: "contain",
+              borderRadius: "8px",
+              boxShadow: "0 0 8px rgba(0,0,0,0.15)",
+            }}
+          />
+          <div
+            style={{
+              width: "48%",
+              maxHeight: "350px",
+              flexShrink: 0,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              padding: "1.5rem",
+              borderRadius: "12px",
+              backgroundColor: "transparent",
+              color: "#ffffff",
+              fontWeight: 600,
             }}
           >
-            <span style={{ color: "#9b59b6" }}>Stellar Blockchain</span>{" "}
-            <span style={{ color: "#f1c40f" }}>NFT Auction</span>{" "}
-            <span style={{ color: "#ffffff" }}>— Make your bid now!</span>
-          </p>
+            <div style={{ flexGrow: 1 }}>
+              <NFTBidModule
+                nftId={1555}
+                currentBid={0.69}
+                lastBidder={"0xF...89DF"}
+                auctionEndTime={new Date(Date.now() + 18 * 60 * 60 * 1000)}
+                onPlaceBid={(amount) => {
+                  console.log("Bid placed:", amount);
+                }}
+              />
+            </div>
+            <p
+              style={{
+                marginTop: "1rem",
+                fontSize: "0.9rem",
+                textAlign: "center",
+              }}
+            >
+              <span style={{ color: "#9b59b6" }}>Stellar Blockchain</span>{" "}
+              <span style={{ color: "#f1c40f" }}>NFT Auction</span>{" "}
+              <span style={{ color: "#ffffff" }}>— Make your bid now!</span>
+            </p>
+          </div>
         </div>
-      </div>
-    </Layout.Inset>
+      </Layout.Inset>
+    </div>
   );
 }
 
@@ -100,13 +102,15 @@ function App() {
           </div>
         }
       />
-      <Layout.Content style={{ flex: 1, padding: "1rem 1rem" }}>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/spacemen" element={<SpacemenGallery />} />
-          <Route path="/docs" element={<Docs />} />
-        </Routes>
-      </Layout.Content>
+      <div style={{ flex: 1, padding: "1rem 1rem" }}>
+        <Layout.Content>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/spacemen" element={<SpacemenGallery />} />
+            <Route path="/docs" element={<Docs />} />
+          </Routes>
+        </Layout.Content>
+      </div>
       <Layout.Footer>
         <span>
           <span style={{ color: "#f1c40f" }}>
