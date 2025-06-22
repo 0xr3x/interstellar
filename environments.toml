@@ -2,8 +2,8 @@
 [development.network]
 rpc-url = "http://localhost:8000/rpc"
 network-passphrase = "Standalone Network ; February 2017"
-run-locally = true # automatically start the local network container, if not already running
-
+run-locally = false # automatically start the local network container, if not already running
+network = "testing"
 [[development.accounts]]
 name = "me" # Required. Keys for this account will be saved to `./.stellar/identity`
 default = true # Optional. Whether to use this account as the `--source` for commands that need one.
@@ -38,26 +38,30 @@ client = true
 
 [development.contracts.spaceman]
 client = true
-constructor_args = """
---iss CASD6L32P7H5P6AHWRBB6NR6DAXVKJPUWZ3IH2YVDHGDZ4JZJPT7K2S5
-"""
 
-[staging.network]
+[testing.network]
 rpc-url = "https://soroban-testnet.stellar.org"
 network-passphrase = "Test SDF Network ; September 2015"
 
-[[staging.accounts]]
+[[testing.accounts]]
 name = "testnet-user"
 default = true
 
-[staging.contracts]
+[testing.contracts]
+[testing.contracts.iss]
+id = "CC4XOC2WQ6GQK7RQ3Q3DYIORMUTRP6CU7VWKVJWRE3HBUJY27GSFDWHR"
+
+[testing.contracts.spaceman]
+id = "CC4XOC2WQ6GQK7RQ3Q3DYIORMUTRP6CU7VWKVJWRE3HBUJY27GSFDWHR"
+
 # soroban-atomic-swap-contract = "C123..."
 # soroban-auth-contract = "C234..."
 # soroban-errors-contract = "C345..."
-# soroban-hello-world-contract = "C456..."
+# soroban-hello-world-contract = "C456..." 
 # soroban-increment-contract = "C567..."
 # soroban-token-contract = "C678..."
 # eurc = "C789..."
+
 
 ### Production environment configuration
 [production.network]

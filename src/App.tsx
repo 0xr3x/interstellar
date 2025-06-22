@@ -63,7 +63,7 @@ function HomePage() {
             </div>
             <p
               style={{
-                marginTop: "1rem",
+                marginTop: "0rem",
                 fontSize: "0.9rem",
                 textAlign: "center",
               }}
