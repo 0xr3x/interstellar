@@ -1,16 +1,18 @@
 import { Client as SpaceManClient } from "spaceman";
 import { Client as ISSClient } from "iss";
 
-const Spaceman = new SpaceManClient({
+export const Spaceman = new SpaceManClient({
   rpcUrl: "https://soroban-testnet.stellar.org",
   networkPassphrase: "Test SDF Network ; September 2015",
   contractId: "CCORFIQVPI55SWQJXUHZCLXB5Q4FGU3LN222XGWMMUPKA7TPXJKBY6RV",
+  publicKey: "GDXVLGC4FTGS4MXHTW2YQ3MRZPTTLS32UN35IM7LNGUIDYR6FZNAWREK",
 });
 
-const ISS = new ISSClient({
+export const ISS = new ISSClient({
   rpcUrl: "https://soroban-testnet.stellar.org",
   networkPassphrase: "Test SDF Network ; September 2015",
-  contractId: "CC4XOC2WQ6GQK7RQ3Q3DYIORMUTRP6CU7VWKVJWRE3HBUJY27GSFDWHR",
+  contractId: "CA6ADSUPRYDY6VCZIXNATWI37VYOKMEDWFJZN23DMRDZOKXNGQTGJ3I4",
+  publicKey: "GDXVLGC4FTGS4MXHTW2YQ3MRZPTTLS32UN35IM7LNGUIDYR6FZNAWREK",
 });
 
 // Función para obtener los URIs de los tokens

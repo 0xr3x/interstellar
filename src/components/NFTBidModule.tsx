@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { ISS } from "../util/superman";
+import { useWallet } from "../hooks/useWallet";
+import { wallet } from "../util/wallet";
 
 interface NFTBidModuleProps {
   nftId: number;
   currentBid: number;
   lastBidder: string;
   auctionEndTime: Date;
-  onPlaceBid: (amount: number) => void;
 }
 
 const NFTBidModule: React.FC<NFTBidModuleProps> = ({
@@ -13,11 +15,12 @@ const NFTBidModule: React.FC<NFTBidModuleProps> = ({
   currentBid,
   lastBidder,
   auctionEndTime,
-  onPlaceBid,
 }) => {
   const [bidInput, setBidInput] = useState("");
   const [timeLeft, setTimeLeft] = useState("");
+  const { address } = useWallet();
 
+  // Función para actualizar el tiempo restante de la subasta
   useEffect(() => {
     const updateTimeLeft = () => {
       const now = new Date();
@@ -33,18 +36,41 @@ const NFTBidModule: React.FC<NFTBidModuleProps> = ({
       }
     };
 
-    updateTimeLeft(); // initial call
+    updateTimeLeft(); // Llamada inicial
     const interval = setInterval(updateTimeLeft, 1000);
     return () => clearInterval(interval);
   }, [auctionEndTime]);
 
-  const handlePlaceBid = () => {
+  const handlePlaceBid = async () => {
     const bid = parseFloat(bidInput);
-    if (!isNaN(bid) && bid > currentBid) {
-      onPlaceBid(bid);
-    } else {
-      alert("Bid must be higher than the current bid.");
+    const bidInteger = BigInt(bid * 10 ** 7); // Corregir el cálculo del BigInt
+
+    try {
+      const BidResult = await ISS.bid({
+        bidder: address!,
+        amount: bidInteger,
+      });
+
+      // Firmar y enviar la transacción
+      await BidResult.signAndSend({
+        signTransaction: (xdr) =>
+          wallet.signTransaction(xdr, {
+            address: address!,
+            networkPassphrase: "Test SDF Network ; September 2015",
+          }),
+      });
+
+      // TODO: Agregar celebración de la puja exitosa
+      alert("Bid placed successfully!");
+    } catch (error) {
+      console.error("Error placing bid:", error);
+      alert("Failed to place bid. Please try again.");
     }
+  };
+
+  // Función síncrona que llama la función asíncrona
+  const handleBidClick = () => {
+    void handlePlaceBid();
   };
 
   return (
@@ -91,7 +117,8 @@ const NFTBidModule: React.FC<NFTBidModuleProps> = ({
         }}
       />
       <button
-        onClick={handlePlaceBid}
+        type="button" // Se agregó el tipo "button"
+        onClick={handleBidClick} // Cambié a usar la función síncrona
         style={{
           width: "100%",
           backgroundColor: "#666",
