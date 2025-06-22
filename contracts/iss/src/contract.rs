@@ -20,22 +20,23 @@ impl ISS {
     // constructor
     pub fn __constructor(e: &Env, owner: Address, token: Address) {
         e.storage().instance().set(&OWNER, &owner);
-        e.storage().instance().set(&BID_TOKEN, &token)
+        e.storage().instance().set(&BID_TOKEN, &token);
+        e.storage().instance().set(&TOKEN_ID, &0u32);
     }
 
     // read functions
 
     pub fn get_current_token_id(e: &Env) -> u32 {
-        e.storage().instance().get(&TOKEN_ID).unwrap()
+        e.storage().instance().get(&TOKEN_ID).unwrap_or(0)
     }
 
     pub fn get_current_highest_bid(e: &Env) -> i128 {
-        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap();
+        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap_or(0);
         e.storage().persistent().get(&(&HIGHEST_BID, token_id)).unwrap_or(0)
     }
 
     pub fn get_current_highest_bidder(e: &Env) -> Option<Address> {
-        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap();
+        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap_or(0);
         e.storage().persistent().get(&(&HIGHEST_BIDDER, token_id))
     }
 
@@ -81,7 +82,7 @@ impl ISS {
 
     // this function starts the very first auction
     pub fn start_auction(e: &Env) {
-        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap();
+        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap_or(0);
         let now = e.ledger().timestamp();
         e.storage().persistent().set(&(&START, token_id), &now);
         
@@ -93,7 +94,7 @@ impl ISS {
     pub fn bid(e: &Env, bidder: Address, amount: i128) {
         bidder.require_auth();
 
-        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap();
+        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap_or(0);
         let start_time: u64 = e
             .storage()
             .persistent()
@@ -144,7 +145,7 @@ impl ISS {
     }
     // this function settles the existing round and starts the next one
     pub fn start_next_round(e: &Env) {
-        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap();
+        let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap_or(0);
     
         // check auction ended
         let start_time: u64 = e
