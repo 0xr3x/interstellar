@@ -52,6 +52,7 @@ const getCurrentBidState = async () => {
       highestBid,
       highestBidder,
       tokenUri: tokenUriResult.result,
+      tokenId,
     };
 
     return bidState;

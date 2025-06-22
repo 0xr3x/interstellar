@@ -94,7 +94,7 @@ const NFTBidModule: React.FC<NFTBidModuleProps> = ({
       <h2 style={{ fontSize: 32, margin: "4px 0" }}>Spaceman {nftId}</h2>
       <div style={{ marginTop: 16, marginBottom: 12 }}>
         <p>
-          <strong>Current bid:</strong> Ξ {currentBid.toFixed(2)}
+          <strong>Current bid:</strong> USDC {currentBid.toFixed(2)}
         </p>
         <p>
           <strong>Auction ends in:</strong> {timeLeft}
@@ -106,7 +106,7 @@ const NFTBidModule: React.FC<NFTBidModuleProps> = ({
         step="0.01"
         value={bidInput}
         onChange={(e) => setBidInput(e.target.value)}
-        placeholder={`Ξ ${currentBid + 0.01} or more`}
+        placeholder={`USDC ${currentBid + 0.01} or more`}
         style={{
           padding: "8px 12px",
           fontSize: 16,
