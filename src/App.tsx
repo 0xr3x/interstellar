@@ -10,6 +10,19 @@ import { useState, useEffect } from "react";
 import superman from "./util/superman";
 import { imageUrls } from "./util/constants";
 
+const auctionTextStyle = {
+  marginTop: 0,
+  fontSize: "0.9rem",
+  textAlign: "center" as const,
+};
+
+const centeredHeading = {
+  fontSize: "3rem",
+  marginBottom: "2rem",
+  color: "#FFFF00",
+  textAlign: "center" as const,
+};
+
 function HomePage() {
   const [bidData, setBidData] = useState({
     highestBid: 0,
@@ -149,17 +162,6 @@ function HomePage() {
                 />
               )}
             </div>
-            <p
-              style={{
-                marginTop: "1rem",
-                fontSize: "0.9rem",
-                textAlign: "center",
-              }}
-            >
-              <span style={{ color: "#9b59b6" }}>Stellar Blockchain</span>{" "}
-              <span style={{ color: "#f1c40f" }}>NFT Auction</span>{" "}
-              <span style={{ color: "#ffffff" }}>— Make your bid now!</span>
-            </p>
           </div>
         </div>
       </Layout.Inset>
@@ -190,7 +192,17 @@ function App() {
           </div>
         }
       />
-      <div style={{ flex: 1, padding: "1rem 1rem" }}>
+      <div style={{ padding: "0 2rem", textAlign: "center" }}>
+        <h1 style={centeredHeading}>
+          Yours to mint. Yours to hold. Yours to orbit.
+        </h1>
+      </div>
+      <p style={auctionTextStyle}>
+        <span style={{ color: "#9b59b6" }}>Stellar Blockchain</span>{" "}
+        <span style={{ color: "#f1c40f" }}>NFT Auction</span>{" "}
+        <span style={{ color: "#ffffff" }}>— Make your bid now!</span>
+      </p>
+      <div style={{ flex: 1, padding: "1rem" }}>
         <Layout.Content>
           <Routes>
             <Route path="/" element={<HomePage />} />

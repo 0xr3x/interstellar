@@ -12,12 +12,6 @@ const SpacemenGallery: React.FC = () => {
         alignItems: "center",
       }}
     >
-      <h1
-        style={{ fontSize: "3.5rem", marginBottom: "2rem", color: "#FFFF00" }}
-      >
-        THE SPACEMEN GALLERY
-      </h1>
-
       <div
         style={{
           display: "flex",
