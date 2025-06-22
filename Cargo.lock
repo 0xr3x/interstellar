@@ -674,6 +674,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8e04e2fd2b8188ea827b32ef11de88377086d690286ab35747ef7f9bf3ccb590"
 
 [[package]]
+name = "iss"
+version = "0.0.1"
+dependencies = [
+ "soroban-sdk",
+ "stellar-default-impl-macro",
+]
+
+[[package]]
 name = "itertools"
 version = "0.10.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -742,15 +750,6 @@ name = "memchr"
 version = "2.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3"
-
-[[package]]
-name = "non-fungible-contract"
-version = "0.0.1"
-dependencies = [
- "soroban-sdk",
- "stellar-default-impl-macro",
- "stellar-non-fungible",
-]
 
 [[package]]
 name = "num-bigint"
@@ -1255,6 +1254,15 @@ dependencies = [
  "wasmi_arena",
  "wasmi_core",
  "wasmparser-nostd",
+]
+
+[[package]]
+name = "spaceman"
+version = "0.0.1"
+dependencies = [
+ "soroban-sdk",
+ "stellar-default-impl-macro",
+ "stellar-non-fungible",
 ]
 
 [[package]]

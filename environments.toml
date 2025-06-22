@@ -24,7 +24,7 @@ default = true # Optional. Whether to use this account as the `--source` for com
 #     underscored-version of the `name` in the contract's Cargo.toml.
 #   - The environment is `development` or `test`
 # Rather than in one list, TOML allows specifying contracts in their own "sections"
-[development.contracts.non_fungible_contract]
+[development.contracts.iss]
 client = true
 
 # If your contract has a `__constructor`, specify your arguments to it here.
@@ -32,8 +32,14 @@ client = true
 # `stellar contract deploy`
 # Only available in `development` and `test` environments
 # TODO add appropriate values for for the constructors arguments
+# constructor_args = """
+# --owner "GDNS3FTRI64VM7YX2INGTZ4VRAEZ62EUYLJ43OXQLOFTSUXSIJ7C2HJL"
+# """
+
+[development.contracts.spaceman]
+client = true
 constructor_args = """
---owner "ADD_OWNER_ADDRESS_HERE"
+--iss CASD6L32P7H5P6AHWRBB6NR6DAXVKJPUWZ3IH2YVDHGDZ4JZJPT7K2S5
 """
 
 [staging.network]
