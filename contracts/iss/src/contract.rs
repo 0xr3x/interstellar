@@ -84,6 +84,9 @@ impl ISS {
         let token_id: u32 = e.storage().instance().get(&TOKEN_ID).unwrap();
         let now = e.ledger().timestamp();
         e.storage().persistent().set(&(&START, token_id), &now);
+        
+        // Emit auction started event
+        e.events().publish(("auction_started",), (token_id, now));
     }
 
     // active function when the auction is underway
@@ -115,13 +118,16 @@ impl ISS {
         // Transfer tokens from bidder to contract
         bid_token.transfer(&bidder, &e.current_contract_address(), &amount);
 
+        let previous_bidder = e.storage().persistent().get::<_, Address>(&(&HIGHEST_BIDDER, token_id));
+
         // refund previous bidder if there was one
-        if let Some(prev_bidder) =
-            e.storage().persistent().get::<_, Address>(&(&HIGHEST_BIDDER, token_id))
-        {
+        if let Some(prev_bidder) = previous_bidder.clone() {
             if current_high > 0 {
                 // Transfer tokens back to previous bidder
                 bid_token.transfer(&e.current_contract_address(), &prev_bidder, &current_high);
+                
+                // Emit refund event
+                e.events().publish(("refund",), (token_id, prev_bidder, current_high));
             }
         }
 
@@ -132,6 +138,9 @@ impl ISS {
         e.storage()
             .persistent()
             .set(&(&HIGHEST_BIDDER, token_id), &bidder);
+
+        // Emit bid event
+        e.events().publish(("bid",), (token_id, bidder, amount, previous_bidder, current_high));
     }
     // this function settles the existing round and starts the next one
     pub fn start_next_round(e: &Env) {
@@ -154,6 +163,12 @@ impl ISS {
             .persistent()
             .get(&(&HIGHEST_BIDDER, token_id))
             .expect("No winner");
+
+        let winning_amount: i128 = e
+            .storage()
+            .persistent()
+            .get(&(&HIGHEST_BID, token_id))
+            .expect("No winning amount");
     
         // mint NFT to winner
         let nft_contract: Address = e.storage().instance().get(&SPACEMAN).unwrap();
@@ -174,6 +189,12 @@ impl ISS {
         // start new round
         let now = e.ledger().timestamp();
         e.storage().persistent().set(&(&START, next_token), &now);
+
+        // Emit round completed event
+        e.events().publish(("round_completed",), (token_id, winner, winning_amount, next_token));
+
+        // Emit new auction started event
+        e.events().publish(("auction_started",), (next_token, now));
     }
     
     // function to withdraw the total previous auction winnings to the dao
@@ -187,6 +208,9 @@ impl ISS {
         if contract_balance > 0 {
             // Transfer all tokens to the owner
             bid_token.transfer(&e.current_contract_address(), &to, &contract_balance);
+            
+            // Emit withdraw event
+            e.events().publish(("withdraw",), (to, contract_balance));
         }
     }
 }
